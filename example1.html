@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Barcode Scanner</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+      input{
+        margin-top:25px;
+        margin-bottom:25px;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+      var db=[];
+      db["04448800"]="Nabisco Grahams|Nabisco Grahams Original Crackers, 14.4 OZ";
+      db["765449581120"]="Further Down the Spiral|https://youtu.be/ZKVn_Cn6kVY"
+      $(document).ready(function(){
+        $("#upc").keypress(function(e){
+          if(e.which == 13){
+            search();
+          }
+        });
+
+        $("#upc").focus();
+      });
+
+      function search(){
+        var value =  $("#upc").val();
+        $("#upc").val("");
+        if(typeof db[value] === 'undefined') {
+          window.location.href = "https://google.com/search?q=" + value;
+          }else{
+          var title = db[value].split("|")[0];
+          var dis = db[value].split("|")[1];
+          if(dis.includes("https://youtu.be")){
+            youtube(value,title,dis);
+            }else{
+            itemfound(value,title,dis);
+          }
+        }
+      }
+
+      function itemfound(value,title,dis){
+        $("#itemtitle").html(title);
+        $("#itemdis").html(dis);
+      };
+
+      function youtube(value,title,dis){
+        window.location.href = dis;
+      }
+    </script>
+  </head>
+  <body>
+
+    <div id="main" class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <input type="number" id="upc" class="form-control"></input>
+        </div>
+        <!--card start-->
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Results 
+            </div>
+            <div class="card-block">
+              <h4 class="card-title" id="itemtitle"></h4>
+              <p class="card-text" id="itemdis"></p>
+            </div>
+          </div>
+        </div>
+        <!--card end-->
+
+      </div>
+    </div>
+
+  </body>
+</html>
+
